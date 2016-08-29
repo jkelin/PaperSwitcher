@@ -168,8 +168,16 @@ namespace PaperSwitcher
 
             while (left != 0)
             {
-                var img = images[r.Next(0, images.Length - 1)];
-                if (Seen.Contains(img.Name)) continue;
+                var notSeenImages = images.Where(i => !Seen.Contains(i.Name)).ToArray();
+                if(notSeenImages.Length == 0)
+                {
+                    Seen.Clear();
+                    Config.Seen.Clear();
+                    left = 0;
+                    continue;
+                }
+
+                var img = notSeenImages[r.Next(0, notSeenImages.Length - 1)];
 
                 Current[left - 1] = img;
                 Seen.Add(img.Name);
